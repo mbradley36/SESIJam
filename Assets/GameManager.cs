@@ -4,11 +4,11 @@ using XInputDotNetPure;
 
 public class GameManager : MonoBehaviour {
 	public static GameManager instance;
-	public GameObject playerPrefab;
+	public GameObject playerPrefab, bulletPrefab;
 	public Color[] playerColors = new Color[4];
 	public float maxBerzerkTime;
 	public float pauseBtwnBullets;
-	public float playerSpeed;
+	public float playerSpeed, bezerkSpeed, bulletForce;
 
 	private PlayerController[] players = new PlayerController[4];
 
@@ -53,5 +53,11 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+	}
+
+	public void InstantiateBullet(Vector3 position, Vector2 direction) {
+		GameObject go = GameObject.Instantiate (bulletPrefab);
+		go.transform.position = position;
+		go.GetComponent<Rigidbody2D>().AddForce(direction*bulletForce);
 	}
 }
