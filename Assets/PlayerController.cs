@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody2D rb;
 
 	[HideInInspector]
-	public string xAxis, yAxis;
+	public string xAxis, yAxis, buildKey;
 
 	// Use this for initialization
 	void Start () {
@@ -21,7 +21,13 @@ public class PlayerController : MonoBehaviour {
 		float xMovement = Input.GetAxis (xAxis);
 		float yMovement = Input.GetAxis (yAxis);
 		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
-			rb.AddForce(new Vector2(xMovement, yMovement));
+			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.playerSpeed);
+		}
+	}
+
+	public void InBuildZone(){
+		if (Input.GetKeyDown (buildKey)) {
+			Debug.Log("build!");
 		}
 	}
 	
