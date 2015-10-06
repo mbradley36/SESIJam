@@ -1,18 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using XInputDotNetPure;
 
 public class PlayerController : MonoBehaviour {
 
 	private bool bezerkState;
-	private int playerNum;
 	private Rigidbody2D rb;
 
 	[HideInInspector]
 	public string xAxis, yAxis, buildKey;
+	public PlayerIndex playerNum;
 
 	// Use this for initialization
 	void Start () {
-		GetComponent<SpriteRenderer> ().color = GameManager.instance.playerColors [playerNum];
+		GetComponent<SpriteRenderer> ().color = GameManager.instance.playerColors [(int)playerNum];
 		rb = GetComponent<Rigidbody2D> ();
 	}
 	
@@ -23,10 +24,11 @@ public class PlayerController : MonoBehaviour {
 		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
 			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.playerSpeed);
 		}
+
 	}
 
 	public void InBuildZone(){
-		if (Input.GetKeyDown (buildKey)) {
+		if (GamePad.GetState(playerNum).Buttons.A == ButtonState.Pressed) {
 			Debug.Log("build!");
 		}
 	}

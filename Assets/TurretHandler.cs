@@ -13,7 +13,7 @@ public class TurretHandler : MonoBehaviour {
 	
 	}
 
-	void OnTriggerEnter2D(Collider2D c) {
+	void OnTriggerStay2D(Collider2D c) {
 		PlayerController pc = c.gameObject.GetComponent<PlayerController>();
 		if(pc) pc.InBuildZone();
 	}
