@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour {
 			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.bezerkSpeed);
 		}
 
-		if(Time.time - lastBulletTime > GameManager.instance.pauseBtwnBullets/2f) {
+		if(Time.time - lastBulletTime > GameManager.instance.pauseBtwnBullets/5f) {
 			Vector3 gunLocation = transform.position;
 			Vector3 shootDir = new Vector3(forward.position.x - transform.position.x, 
 			                               forward.position.y - transform.position.y, 
