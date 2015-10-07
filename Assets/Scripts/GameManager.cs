@@ -24,11 +24,12 @@ public class GameManager : MonoBehaviour {
 			PlayerController pc = GameObject.Instantiate(playerPrefab).GetComponent<PlayerController>();
 			players[i] = pc;
 			pc.playerNum = (PlayerIndex)i;
-			GameObject shield = GameObject.instantiate(shield);
-			shield.renderer.enabled = false;
-			shield.transform.position = pc.transform.position;
-			shield.transform.parent = pc;
-			pc.shield = shield;
+			GameObject s = GameObject.Instantiate(shield);
+			Renderer shieldRenderer = s.transform.GetChild(0).GetComponent<Renderer>();
+			shieldRenderer.enabled = false;
+			s.transform.position = pc.transform.position;
+			s.transform.parent = pc.transform;
+			pc.shield = shieldRenderer;
 
 		}
 

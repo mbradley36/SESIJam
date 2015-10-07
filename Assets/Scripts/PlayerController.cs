@@ -9,8 +9,10 @@ public class PlayerController : MonoBehaviour {
 
 	[HideInInspector]
 	public string xAxis, yAxis, buildKey;
+	[HideInInspector]
 	public PlayerIndex playerNum;
-	private GameObject shield;
+	[HideInInspector]
+	public Renderer shield;
 
 	private float xMovement, yMovement, shieldLeft;
 
@@ -32,8 +34,10 @@ public class PlayerController : MonoBehaviour {
 			UpdateBuilderMovement();
 		}
 
-		if (GamePad.GetState (playerNum).Buttons.bLeftTrigger == ButtonState.Pressed) {
-			shield.renderer.enabled = true;
+		if (GamePad.GetState (playerNum).Triggers.Left > 0.1f) {
+			shield.enabled = true;
+		} else {
+			shield.enabled = false;
 		}
 	}
 
