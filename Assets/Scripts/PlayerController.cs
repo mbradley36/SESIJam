@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour {
 	public string xAxis, yAxis, buildKey;
 	public PlayerIndex playerNum;
 
-	private float xMovement, yMovement;
+	private float xMovement, yMovement, shieldLeft;
 
 	// Use this for initialization
 	void Start () {

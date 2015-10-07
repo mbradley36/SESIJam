@@ -6,6 +6,7 @@ public class TurretHandler : MonoBehaviour {
 	private float lastShot, beginCapture;
 	private Vector2 fireDirection;
 	private int playerOwnedBy;
+	private GameObject buildEffect;
 
 	// Use this for initialization
 	void Start () {
@@ -27,17 +28,27 @@ public class TurretHandler : MonoBehaviour {
 		PlayerController pc = c.gameObject.GetComponent<PlayerController>();
 		if(pc) {
 			if(pc.InBuildZone()) {
-				Debug.Log("dfajkle");
-				if(beginCapture == 0f) beginCapture = Time.time;
-				if (Time.time - beginCapture > GameManager.instance.timeToBuild) {
+				if(beginCapture == 0f) {
+					beginCapture = Time.time;
+					buildEffect = GameManager.instance.Rebuild(gameObject.transform.position);
+				}
+				if (Time.time - beginCapture > GameManager.instance.timeToBuild && !active) {
 					active = true;
 					playerOwnedBy = (int)pc.playerNum;
 					GetComponent<BoxCollider2D>().isTrigger = false;
 					Vector2 charPos = c.gameObject.transform.position;
 					fireDirection = new Vector2(charPos.x - transform.position.x, charPos.y - transform.position.y);
 					Debug.Log(fireDirection);
+					beginCapture = 0f;
+					GameObject.Destroy(buildEffect);
 				}
 			}
 		}
+	}
+
+	void OnTriggerExit2D(Collider2D c) {
+		beginCapture = 0f;
+		if (buildEffect)
+			GameObject.Destroy (buildEffect);
 	}
 }
