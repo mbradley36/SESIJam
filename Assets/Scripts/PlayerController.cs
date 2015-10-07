@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector]
 	public string xAxis, yAxis, buildKey;
 	public PlayerIndex playerNum;
+	private GameObject shield;
 
 	private float xMovement, yMovement, shieldLeft;
 
@@ -31,9 +32,9 @@ public class PlayerController : MonoBehaviour {
 			UpdateBuilderMovement();
 		}
 
-		//if (GamePad.GetState (playerNum).Buttons. == ButtonState.Pressed) {
-
-		//}
+		if (GamePad.GetState (playerNum).Buttons.bLeftTrigger == ButtonState.Pressed) {
+			shield.renderer.enabled = true;
+		}
 	}
 
 	public bool InBuildZone(){

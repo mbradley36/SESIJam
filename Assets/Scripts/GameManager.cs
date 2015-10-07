@@ -24,6 +24,12 @@ public class GameManager : MonoBehaviour {
 			PlayerController pc = GameObject.Instantiate(playerPrefab).GetComponent<PlayerController>();
 			players[i] = pc;
 			pc.playerNum = (PlayerIndex)i;
+			GameObject shield = GameObject.instantiate(shield);
+			shield.renderer.enabled = false;
+			shield.transform.position = pc.transform.position;
+			shield.transform.parent = pc;
+			pc.shield = shield;
+
 		}
 
 		//input setup
