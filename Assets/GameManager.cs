@@ -58,6 +58,6 @@ public class GameManager : MonoBehaviour {
 	public void InstantiateBullet(Vector3 position, Vector2 direction) {
 		GameObject go = GameObject.Instantiate (bulletPrefab);
 		go.transform.position = position;
-		go.GetComponent<Rigidbody2D>().AddForce(direction*bulletForce);
+		go.GetComponent<Rigidbody2D>().AddForce(new Vector2(1f,1f)*bulletForce);
 	}
 }

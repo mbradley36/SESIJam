@@ -4,7 +4,6 @@ using System.Collections;
 public class TurretHandler : MonoBehaviour {
 	private bool active;
 	private float lastShot;
-	private Vector2 direction;
 
 	// Use this for initialization
 	void Start () {
@@ -16,7 +15,7 @@ public class TurretHandler : MonoBehaviour {
 		if (active) {
 			if (Time.time - lastShot > GameManager.instance.pauseBtwnBullets) {
 				lastShot = Time.time;
-				GameManager.instance.InstantiateBullet (transform.position, direction);
+				GameManager.instance.InstantiateBullet (transform.position, transform.forward);
 			}
 		}
 	}
