@@ -57,9 +57,11 @@ public class TurretHandler : MonoBehaviour {
 
 	void OnCollisionEnter2D(Collision2D c) {
 		if (c.gameObject.layer == LayerMask.NameToLayer("bullet")) {
-			health -= 1;
-			Debug.Log("I've been hit!");
-			if(health < 0) DeactivateTurret();
+			if(c.gameObject.GetComponent<BulletLifeHandler>().activeBullet) {
+				health -= 1;
+				Debug.Log("I've been hit!");
+				if(health < 0) DeactivateTurret();
+			}
 		}
 	}
 
