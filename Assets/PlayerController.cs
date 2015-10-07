@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		xMovement = Input.GetAxis (xAxis);
-		yMovement = Input.GetAxis (yAxis);
+		xMovement = GamePad.GetState(playerNum).ThumbSticks.Left.X;
+		yMovement = GamePad.GetState(playerNum).ThumbSticks.Left.Y;
 
 		if (bezerkState) {
 			UpdateBezerkMovement ();

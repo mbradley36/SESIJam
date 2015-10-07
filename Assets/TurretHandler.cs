@@ -4,6 +4,8 @@ using System.Collections;
 public class TurretHandler : MonoBehaviour {
 	private bool active;
 	private float lastShot, beginCapture;
+	private Vector2 fireDirection;
+	private int playerOwnedBy;
 
 	// Use this for initialization
 	void Start () {
@@ -16,7 +18,7 @@ public class TurretHandler : MonoBehaviour {
 		if (active) {
 			if (Time.time - lastShot > GameManager.instance.pauseBtwnBullets) {
 				lastShot = Time.time;
-				GameManager.instance.InstantiateBullet (transform.position, transform.forward);
+				GameManager.instance.InstantiateBullet (transform.position, fireDirection);
 			}
 		}
 	}
@@ -25,17 +27,17 @@ public class TurretHandler : MonoBehaviour {
 		PlayerController pc = c.gameObject.GetComponent<PlayerController>();
 		if(pc) {
 			if(pc.InBuildZone()) {
+				Debug.Log("dfajkle");
 				if(beginCapture == 0f) beginCapture = Time.time;
-				StartCoroutine("TriggerBuild");
+				if (Time.time - beginCapture > GameManager.instance.timeToBuild) {
+					active = true;
+					playerOwnedBy = (int)pc.playerNum;
+					GetComponent<BoxCollider2D>().isTrigger = false;
+					Vector2 charPos = c.gameObject.transform.position;
+					fireDirection = new Vector2(charPos.x - transform.position.x, charPos.y - transform.position.y);
+					Debug.Log(fireDirection);
+				}
 			}
 		}
-	}
-
-	private IEnumerator TriggerBuild() {
-		//build stuff
-		if (Time.time - beginCapture > GameManager.instance.timeToBuild) {
-			active = true;
-		}
-		yield return new WaitForSeconds(0.001f);
 	}
 }
