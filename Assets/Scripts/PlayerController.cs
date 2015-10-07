@@ -30,6 +30,10 @@ public class PlayerController : MonoBehaviour {
 		} else {
 			UpdateBuilderMovement();
 		}
+
+		//if (GamePad.GetState (playerNum).Buttons. == ButtonState.Pressed) {
+
+		//}
 	}
 
 	public bool InBuildZone(){

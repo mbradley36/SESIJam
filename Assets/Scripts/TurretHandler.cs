@@ -6,7 +6,7 @@ public class TurretHandler : MonoBehaviour {
 	private float lastShot, beginCapture;
 	private Vector2 fireDirection;
 	private int playerOwnedBy;
-	private GameObject buildEffect;
+	private GameObject buildEffect, shootEffect;
 
 	// Use this for initialization
 	void Start () {
@@ -38,9 +38,9 @@ public class TurretHandler : MonoBehaviour {
 					GetComponent<BoxCollider2D>().isTrigger = false;
 					Vector2 charPos = c.gameObject.transform.position;
 					fireDirection = new Vector2(charPos.x - transform.position.x, charPos.y - transform.position.y);
-					Debug.Log(fireDirection);
 					beginCapture = 0f;
 					GameObject.Destroy(buildEffect);
+					shootEffect = GameManager.instance.Fire(transform.position, fireDirection);
 				}
 			}
 		}

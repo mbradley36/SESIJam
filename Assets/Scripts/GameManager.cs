@@ -70,13 +70,18 @@ public class GameManager : MonoBehaviour {
 		
 	}
 
+	public GameObject Fire(Vector3 position, Vector3 direction) {
+		GameObject effect = GameObject.Instantiate (turretFire);
+		effect.transform.position = position;
+		effect.transform.LookAt(direction);
+
+		return effect;
+	}
+
 	public void InstantiateBullet(Vector3 position, Vector2 direction) {
 		//start bullet fire and effect
 		GameObject go = GameObject.Instantiate (bulletPrefab);
 		go.transform.position = position;
-		GameObject effect = GameObject.Instantiate (turretFire);
-		effect.transform.position = position;
-
 		go.GetComponent<Rigidbody2D>().AddForce(direction*bulletForce);
 	}
 }
