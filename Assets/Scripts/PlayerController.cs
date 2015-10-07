@@ -98,6 +98,7 @@ public class PlayerController : MonoBehaviour {
 		gameObject.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
 		gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
 		bezerkState = true;
+		berzerkStart = Time.time;
 		lastBulletTime = Time.time;
 	}
 
