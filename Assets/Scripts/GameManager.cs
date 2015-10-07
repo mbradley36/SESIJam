@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour {
 	public Color[] playerColors = new Color[4];
 	public float minBerzerkTime, maxBerzerkTime;
 	public float pauseBtwnBullets;
-	public float playerSpeed, bezerkSpeed, bulletForce, timeToBuild, shiledTimeLimit, shieldBurnTime, rotationSpeed;
+	public float playerSpeed, bezerkSpeed, bulletForce, timeToBuild, 
+					shiledTimeLimit, shieldBurnTime, rotationSpeed, turretHealth;
 	private float lastBerzerk;
 	public float berzerkTimer;
 	private bool canBerzerk = true;
