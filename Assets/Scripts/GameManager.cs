@@ -7,9 +7,12 @@ public class GameManager : MonoBehaviour {
 	public GameObject playerPrefab, bulletPrefab,
 						objectDestroyed, objectRebuild, shield, turretFire;
 	public Color[] playerColors = new Color[4];
-	public float maxBerzerkTime;
+	public float minBerzerkTime, maxBerzerkTime;
 	public float pauseBtwnBullets;
 	public float playerSpeed, bezerkSpeed, bulletForce, timeToBuild, shiledTimeLimit, shieldBurnTime;
+	private float lastBerzerk;
+	public float berzerkTimer;
+	private bool canBerzerk = true;
 
 	public int[] buildCounts = new int[4];
 
@@ -61,12 +64,37 @@ public class GameManager : MonoBehaviour {
 			players [3].xAxis = "Horizontal_3";
 			players [3].yAxis = "Vertical_3";
 		}
-	
+
+		lastBerzerk = Time.time;
+		berzerkTimer = GetNewTimer ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (Time.time - lastBerzerk > berzerkTimer && canBerzerk) {
+			ActivateBerzerk();
+		}
+	}
+
+	float GetNewTimer() {
+		return Random.Range (minBerzerkTime, maxBerzerkTime);
+	}
+
+	private void ActivateBerzerk() {
+		int lowest = 9001;
+		int playerNum = 0;
+
+		for(int i = 0; i < buildCounts.Length; i++) {
+			if(buildCounts[i] != -1 && buildCounts[i] < lowest) {
+				if( lowest == buildCounts[i] ) return;
+				playerNum = i;
+				lowest = buildCounts[i];
+			}
+		}
+
+		players[playerNum].ActivateBerzerk();
+		canBerzerk = false;
+
 	}
 
 	public GameObject Rebuild(Vector3 position) {
@@ -81,6 +109,12 @@ public class GameManager : MonoBehaviour {
 
 	public void Shield(Vector3 position) {
 		
+	}
+
+	public void ResetBerzerkTimer() {
+		canBerzerk = true;
+		berzerkTimer = GetNewTimer();
+		lastBerzerk = Time.time;
 	}
 
 	public GameObject Fire(Vector3 position, Vector3 direction) {

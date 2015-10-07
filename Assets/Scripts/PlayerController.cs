@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector]
 	public float shieldUsed = 0f;
 	private bool shieldBurnOut;
-	private float burnTime;
+	private float burnTime, lastBulletTime, berzerkStart;
 
 	private float xMovement, yMovement, shieldLeft;
 
@@ -34,9 +34,42 @@ public class PlayerController : MonoBehaviour {
 		yMovement = GamePad.GetState(playerNum).ThumbSticks.Left.Y;
 
 		if (bezerkState) {
-			UpdateBezerkMovement ();
+			if(Time.time - berzerkStart > GameManager.instance.berzerkTimer) {
+				DeactivateBerzerk();
+				GameManager.instance.ResetBerzerkTimer();
+				UpdateBuilderMovement();
+			} else {
+				UpdateBezerkMovement ();
+			}
 		} else {
 			UpdateBuilderMovement();
+		}
+	}
+
+	public bool InBuildZone(){
+		if (GamePad.GetState (playerNum).Buttons.A == ButtonState.Pressed) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private void UpdateBezerkMovement() {
+		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
+			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.bezerkSpeed);
+		}
+
+		if(Time.time - lastBulletTime > GameManager.instance.pauseBtwnBullets/2f) {
+			Vector3 gunLocation = transform.position;
+			//gunLocation.x += 5;
+			GameManager.instance.InstantiateBullet (gunLocation, new Vector3(1,1,0));
+			lastBulletTime = Time.time;
+		}
+	}
+
+	private void UpdateBuilderMovement() {
+		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
+			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.playerSpeed);
 		}
 
 		if (GamePad.GetState (playerNum).Triggers.Left > 0.1f && shieldUsed < GameManager.instance.shiledTimeLimit) {
@@ -60,24 +93,19 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	public bool InBuildZone(){
-		if (GamePad.GetState (playerNum).Buttons.A == ButtonState.Pressed) {
-			return true;
-		} else {
-			return false;
-		}
+	public void ActivateBerzerk() {
+		gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
+		gameObject.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
+		gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
+		bezerkState = true;
+		lastBulletTime = Time.time;
 	}
 
-	private void UpdateBezerkMovement() {
-		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
-			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.bezerkSpeed);
-		}
-	}
-
-	private void UpdateBuilderMovement() {
-		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
-			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.playerSpeed);
-		}
+	public void DeactivateBerzerk() {
+		gameObject.layer = LayerMask.NameToLayer("Default");
+		gameObject.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Default");
+		gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Default");
+		bezerkState = false;
 	}
 	
 }
