@@ -13,7 +13,10 @@ public class PlayerController : MonoBehaviour {
 	public PlayerIndex playerNum;
 	[HideInInspector]
 	public Renderer shield;
-	public float shieldUsed = 2f;
+	[HideInInspector]
+	public float shieldUsed = 0f;
+	private bool shieldBurnOut;
+	private float burnTime;
 
 	private float xMovement, yMovement, shieldLeft;
 
@@ -21,6 +24,7 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		GetComponent<SpriteRenderer> ().color = GameManager.instance.playerColors [(int)playerNum];
 		rb = GetComponent<Rigidbody2D> ();
+		burnTime = Time.time + GameManager.instance.shieldBurnTime;
 	}
 	
 	// Update is called once per frame
@@ -35,12 +39,24 @@ public class PlayerController : MonoBehaviour {
 			UpdateBuilderMovement();
 		}
 
-		if (GamePad.GetState (playerNum).Triggers.Left > 0.1f) {
+		if (GamePad.GetState (playerNum).Triggers.Left > 0.1f && shieldUsed < GameManager.instance.shiledTimeLimit) {
 			shield.enabled = true;
+			shieldUsed += 0.1f;
 			gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
-		} else {
+		} else if(shieldUsed > GameManager.instance.shiledTimeLimit){
+			shieldBurnOut = true;
 			shield.enabled = false;
 			gameObject.layer = LayerMask.NameToLayer("Default");
+			burnTime = Time.time;
+			shieldUsed = GameManager.instance.shiledTimeLimit;
+		} else {
+			if(shieldBurnOut && Time.time - burnTime > GameManager.instance.shieldBurnTime) {
+				shieldBurnOut = false;
+				shieldUsed = 0f;
+			} else {
+				shield.enabled = false;
+				gameObject.layer = LayerMask.NameToLayer("Default");
+			}
 		}
 	}
 
