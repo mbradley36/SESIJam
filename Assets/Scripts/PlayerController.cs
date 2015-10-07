@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour {
 	public float shieldUsed = 0f;
 	private bool shieldBurnOut;
 	private float burnTime, lastBulletTime, berzerkStart;
+	private Transform forward;
 
 	private float xMovement, yMovement, shieldLeft;
 
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour {
 		GetComponent<SpriteRenderer> ().color = GameManager.instance.playerColors [(int)playerNum];
 		rb = GetComponent<Rigidbody2D> ();
 		burnTime = Time.time + GameManager.instance.shieldBurnTime;
+		forward = transform.GetChild (0);
 	}
 	
 	// Update is called once per frame
@@ -61,9 +63,16 @@ public class PlayerController : MonoBehaviour {
 
 		if(Time.time - lastBulletTime > GameManager.instance.pauseBtwnBullets/2f) {
 			Vector3 gunLocation = transform.position;
-			//gunLocation.x += 5;
-			GameManager.instance.InstantiateBullet (gunLocation, new Vector3(1,1,0));
+			Vector3 shootDir = new Vector3(forward.position.x - transform.position.x, 
+			                               forward.position.y - transform.position.y, 
+			                               forward.position.y - transform.position.z);
+			GameManager.instance.InstantiateBullet (forward.position, shootDir);
 			lastBulletTime = Time.time;
+		}
+
+		float fwdRotation = GamePad.GetState(playerNum).ThumbSticks.Right.X;
+		if (Mathf.Abs(fwdRotation) > 0.1f) {
+			forward.RotateAround(transform.position, Vector3.forward, GameManager.instance.rotationSpeed*fwdRotation*Time.deltaTime);
 		}
 	}
 
@@ -94,18 +103,12 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void ActivateBerzerk() {
-		gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
-		gameObject.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
-		gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
 		bezerkState = true;
 		berzerkStart = Time.time;
 		lastBulletTime = Time.time;
 	}
 
 	public void DeactivateBerzerk() {
-		gameObject.layer = LayerMask.NameToLayer("Default");
-		gameObject.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Default");
-		gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("Default");
 		bezerkState = false;
 	}
 	
