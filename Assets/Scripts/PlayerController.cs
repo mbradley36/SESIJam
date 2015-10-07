@@ -37,18 +37,16 @@ public class PlayerController : MonoBehaviour {
 
 		if (GamePad.GetState (playerNum).Triggers.Left > 0.1f) {
 			shield.enabled = true;
-			//gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
+			gameObject.layer = LayerMask.NameToLayer("bulletIgnore");
 		} else {
 			shield.enabled = false;
-			//gameObject.layer = LayerMask.NameToLayer("default");
+			gameObject.layer = LayerMask.NameToLayer("Default");
 		}
 	}
 
 	public bool InBuildZone(){
 		if (GamePad.GetState (playerNum).Buttons.A == ButtonState.Pressed) {
-			Debug.Log ("build!");
 			return true;
-			//StartCoroutine("TriggerBuild");
 		} else {
 			return false;
 		}
