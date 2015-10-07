@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour {
 	public float pauseBtwnBullets;
 	public float playerSpeed, bezerkSpeed, bulletForce, timeToBuild, shiledTimeLimit;
 
+	public int[] buildCounts = new int[4];
+
 	private PlayerController[] players = new PlayerController[4];
 
 	void Awake() {
@@ -19,6 +21,10 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		for(int i = 0; i < buildCounts.Length; i++) {
+			buildCounts[i] = -1;
+		}
+
 		//instantiate players
 		for (int i = 0; i < Input.GetJoystickNames().Length; i++) {
 			PlayerController pc = GameObject.Instantiate(playerPrefab).GetComponent<PlayerController>();
@@ -30,7 +36,7 @@ public class GameManager : MonoBehaviour {
 			s.transform.position = pc.transform.position;
 			s.transform.parent = pc.transform;
 			pc.shield = shieldRenderer;
-
+			buildCounts[i] = 0;
 		}
 
 		//input setup

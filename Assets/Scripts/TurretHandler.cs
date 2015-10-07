@@ -28,13 +28,14 @@ public class TurretHandler : MonoBehaviour {
 		PlayerController pc = c.gameObject.GetComponent<PlayerController>();
 		if(pc) {
 			if(pc.InBuildZone()) {
-				if(beginCapture == 0f) {
+				if(beginCapture == 0f && !buildEffect) {
 					beginCapture = Time.time;
 					buildEffect = GameManager.instance.Rebuild(gameObject.transform.position);
 				}
 				if (Time.time - beginCapture > GameManager.instance.timeToBuild && !active) {
 					active = true;
 					playerOwnedBy = (int)pc.playerNum;
+					GameManager.instance.buildCounts[playerOwnedBy] ++;
 					GetComponent<BoxCollider2D>().isTrigger = false;
 					Vector2 charPos = c.gameObject.transform.position;
 					fireDirection = new Vector2(charPos.x - transform.position.x, charPos.y - transform.position.y);
