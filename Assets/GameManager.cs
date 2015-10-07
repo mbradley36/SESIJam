@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour {
 	public Color[] playerColors = new Color[4];
 	public float maxBerzerkTime;
 	public float pauseBtwnBullets;
-	public float playerSpeed, bezerkSpeed, bulletForce;
+	public float playerSpeed, bezerkSpeed, bulletForce, timeToBuild;
 
 	private PlayerController[] players = new PlayerController[4];
 

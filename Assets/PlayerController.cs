@@ -42,11 +42,6 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator TriggerBuild() {
-		//build stuff
-		yield return new WaitForSeconds(0.001f);
-	}
-
 	private void UpdateBezerkMovement() {
 		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
 			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.bezerkSpeed);
