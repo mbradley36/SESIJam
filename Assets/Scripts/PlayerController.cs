@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public bool InBuildZone(){
-		if (GamePad.GetState (playerNum).Buttons.A == ButtonState.Pressed) {
+		if (GamePad.GetState(playerNum).Triggers.Right > 0.1f && !bezerkState) {
 			return true;
 		} else {
 			return false;
@@ -71,32 +71,33 @@ public class PlayerController : MonoBehaviour {
 
 		if(Time.time - lastBulletTime > GameManager.instance.pauseBtwnBullets/5f) {
 			Vector3 gunLocation = transform.position;
-			Vector3 shootDir = new Vector3(cannon1.position.x - transform.position.x,
-                                           cannon1.position.y - transform.position.y,
-                                           cannon1.position.y - transform.position.z);
-            shootDir = new Vector3(shootDir.y, shootDir.x, shootDir.z);
+			Vector3 shootDir = new Vector3(transform.forward.x - transform.position.x,
+                                           transform.forward.x - transform.position.y,
+                                           transform.forward.x - transform.position.z);
 			GameManager.instance.InstantiateBullet (cannon1.position, shootDir);
-            Vector3 shootDir2 = new Vector3(cannon2.position.x - transform.position.x,
-                                            cannon2.position.y - transform.position.y,
-                                            cannon2.position.y - transform.position.z);
-            shootDir2 = new Vector3(-shootDir2.y, shootDir2.x, shootDir2.z);
-            GameManager.instance.InstantiateBullet(cannon2.position, shootDir2);
+            GameManager.instance.InstantiateBullet(cannon2.position, shootDir);
             lastBulletTime = Time.time;
 		}
 
 		float horz = GamePad.GetState(playerNum).ThumbSticks.Right.X;
         float vert = GamePad.GetState(playerNum).ThumbSticks.Right.Y;
         if (Mathf.Abs(horz) > 0.1f || Mathf.Abs(vert) > 0.1f) {
-            //forward.RotateAround(transform.position, Vector3.forward, GameManager.instance.rotationSpeed*fwdRotation*Time.deltaTime);
             float angleT = Mathf.Atan2(vert, horz) * Mathf.Rad2Deg;
-            Debug.Log(angleT);
-            //transform.RotateAround(transform.position, Vector3.forward, angleT);
-            //if(Mathf.Abs(transform.rotation.z - angleT) < 0.1f)transform.Rotate(new Vector3(0, 0, angleT));
             transform.localEulerAngles = new Vector3(0, 0, angleT);
         }
 	}
 
-	private void UpdateBuilderMovement() {
+    public float GetRotationX()
+    {
+        return GamePad.GetState(playerNum).ThumbSticks.Right.X;
+    }
+
+    public float GetRotationY()
+    {
+        return GamePad.GetState(playerNum).ThumbSticks.Right.Y;
+    }
+
+    private void UpdateBuilderMovement() {
 		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
 			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.playerSpeed);
 		}
@@ -123,6 +124,8 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void ActivateBerzerk() {
+        GetComponent<Rigidbody2D>().isKinematic = true;
+
 		bezerkState = true;
 		berzerkStart = Time.time;
 		lastBulletTime = Time.time;
@@ -132,7 +135,9 @@ public class PlayerController : MonoBehaviour {
     }
 
 	public void DeactivateBerzerk() {
-		bezerkState = false;
+        GetComponent<Rigidbody2D>().isKinematic = false;
+
+        bezerkState = false;
 
         berzerk.enabled = false;
         normal.enabled = true;

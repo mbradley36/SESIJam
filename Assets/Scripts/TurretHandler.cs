@@ -32,15 +32,24 @@ public class TurretHandler : MonoBehaviour {
 				if(beginCapture == 0f && !buildEffect) {
 					beginCapture = Time.time;
 					buildEffect = GameManager.instance.Rebuild(gameObject.transform.position);
-				}
-				if (Time.time - beginCapture > GameManager.instance.timeToBuild && !active) {
+                }
+
+                float horz = pc.GetRotationX();
+                float vert = pc.GetRotationY();
+                if (Mathf.Abs(horz) > 0.1f || Mathf.Abs(vert) > 0.1f)
+                {
+                    float angleT = Mathf.Atan2(vert, horz) * Mathf.Rad2Deg;
+                    transform.localEulerAngles = new Vector3(0, 0, angleT);
+                }
+
+                if (Time.time - beginCapture > GameManager.instance.timeToBuild && !active) {
 					active = true;
 					health = GameManager.instance.turretHealth;
 					playerOwnedBy = (int)pc.playerNum;
 					GameManager.instance.buildCounts[playerOwnedBy] ++;
 					GetComponent<BoxCollider2D>().isTrigger = false;
 					Vector2 charPos = c.gameObject.transform.position;
-					fireDirection = new Vector2(charPos.x - transform.position.x, charPos.y - transform.position.y);
+                    fireDirection = transform.right;
 					beginCapture = 0f;
 					GameObject.Destroy(buildEffect);
 					shootEffect = GameManager.instance.Fire(transform.position, fireDirection);
