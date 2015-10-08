@@ -7,6 +7,7 @@ public class TurretHandler : MonoBehaviour {
 	private Vector2 fireDirection;
 	private int playerOwnedBy;
 	private GameObject buildEffect, shootEffect;
+	private float health;
 
 	// Use this for initialization
 	void Start () {
@@ -28,13 +29,15 @@ public class TurretHandler : MonoBehaviour {
 		PlayerController pc = c.gameObject.GetComponent<PlayerController>();
 		if(pc) {
 			if(pc.InBuildZone()) {
-				if(beginCapture == 0f) {
+				if(beginCapture == 0f && !buildEffect) {
 					beginCapture = Time.time;
 					buildEffect = GameManager.instance.Rebuild(gameObject.transform.position);
 				}
 				if (Time.time - beginCapture > GameManager.instance.timeToBuild && !active) {
 					active = true;
+					health = GameManager.instance.turretHealth;
 					playerOwnedBy = (int)pc.playerNum;
+					GameManager.instance.buildCounts[playerOwnedBy] ++;
 					GetComponent<BoxCollider2D>().isTrigger = false;
 					Vector2 charPos = c.gameObject.transform.position;
 					fireDirection = new Vector2(charPos.x - transform.position.x, charPos.y - transform.position.y);
@@ -50,5 +53,23 @@ public class TurretHandler : MonoBehaviour {
 		beginCapture = 0f;
 		if (buildEffect)
 			GameObject.Destroy (buildEffect);
+	}
+
+	void OnCollisionEnter2D(Collision2D c) {
+		if (c.gameObject.layer == LayerMask.NameToLayer("bullet")) {
+			if(c.gameObject.GetComponent<BulletLifeHandler>().activeBullet) {
+				health -= 1;
+				Debug.Log("I've been hit!");
+				if(health < 0) DeactivateTurret();
+			}
+		}
+	}
+
+	void DeactivateTurret(){
+		Debug.Log("deactivating turret");
+		active = false;
+		GameManager.instance.buildCounts[playerOwnedBy] --;
+		GetComponent<BoxCollider2D>().isTrigger = true;
+		GameObject.Destroy (shootEffect);
 	}
 }
