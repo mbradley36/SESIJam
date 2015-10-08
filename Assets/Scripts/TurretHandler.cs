@@ -78,6 +78,7 @@ public class TurretHandler : MonoBehaviour {
 		Debug.Log("deactivating turret");
 		active = false;
 		GameManager.instance.buildCounts[playerOwnedBy] --;
+        GameManager.instance.DestroyCannon(transform.position);
 		GetComponent<BoxCollider2D>().isTrigger = true;
 		GameObject.Destroy (shootEffect);
 	}

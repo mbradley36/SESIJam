@@ -104,12 +104,8 @@ public class GameManager : MonoBehaviour {
 		return go;
 	}
 
-	public void Destroy(Vector3 position) {
-		
-	}
-
-	public void Shield(Vector3 position) {
-		
+	public void DestroyCannon(Vector3 position) {
+        (GameObject.Instantiate(objectDestroyed)).transform.position = position;
 	}
 
 	public void ResetBerzerkTimer() {
