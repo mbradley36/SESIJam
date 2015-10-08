@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 0cdfbf7cab158984dbf1083fd407a3e9
-timeCreated: 1444282923
+timeCreated: 1444321746
 licenseType: Pro
 SubstanceImporter:
   serializedVersion: 5
@@ -49,14 +49,14 @@ SubstanceImporter:
         texture: {instanceID: 0}
     - name: Contrast
       value:
-        scalar[0]: 0
+        scalar[0]: .204999998
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
         texture: {instanceID: 0}
     - name: Depth
       value:
-        scalar[0]: 0
+        scalar[0]: .632000029
         scalar[1]: 0
         scalar[2]: 0
         scalar[3]: 0
@@ -198,16 +198,16 @@ SubstanceImporter:
           second: 0
         data:
           first:
-            name: _EmissionScaleUI
-          second: 1
-        data:
-          first:
             name: _Mode
           second: 0
         data:
           first:
             name: _Metallic
           second: 0
+        data:
+          first:
+            name: _EmissionScaleUI
+          second: 1
       colors:
         data:
           first:

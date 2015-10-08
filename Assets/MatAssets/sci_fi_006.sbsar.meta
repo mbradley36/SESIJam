@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 576d8c2beb49af441af4f22617d02a66
-timeCreated: 1444276275
+timeCreated: 1444322373
 licenseType: Pro
 SubstanceImporter:
   serializedVersion: 5
@@ -208,7 +208,7 @@ SubstanceImporter:
           first:
             name: _MainTex
           second:
-            texture: {fileID: 2800000, guid: 72a58bd572050c34c9196752edba5cac, type: 3}
+            texture: {fileID: 2800000, guid: e0d343d0c23babc439b1222b9376c619, type: 3}
             scale: {x: 1, y: 1}
             offset: {x: 0, y: 0}
         data:
@@ -310,12 +310,12 @@ SubstanceImporter:
           second: 0
         data:
           first:
-            name: _EmissionScaleUI
-          second: 1
-        data:
-          first:
             name: _Mode
           second: 0
+        data:
+          first:
+            name: _EmissionScaleUI
+          second: 1
       colors:
         data:
           first:
@@ -324,7 +324,7 @@ SubstanceImporter:
         data:
           first:
             name: _Color
-          second: {r: 1, g: 1, b: 1, a: 1}
+          second: {r: 1, g: 0, b: 0, a: 1}
         data:
           first:
             name: _SpecColor
