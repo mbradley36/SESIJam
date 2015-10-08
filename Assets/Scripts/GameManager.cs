@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 	public GameObject playerPrefab, bulletPrefab,
 						objectDestroyed, objectRebuild, 
-                        shield, turretFire, startSprite, spawnTransform;
+                        shield, turretFire, startSprite, 
+                        instructionSprite, spawnTransform;
 	public Color[] playerColors = new Color[4];
 	public float minBerzerkTime, maxBerzerkTime;
 	public float pauseBtwnBullets;
@@ -17,7 +18,7 @@ public class GameManager : MonoBehaviour {
 	private bool canBerzerk = true;
 
     [HideInInspector]
-    public bool StartScreen;
+    public bool StartScreen, instructionScren;
 
 	public int[] buildCounts = new int[4];
 
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         StartScreen = true;
+        instructionScren = false;
 		for(int i = 0; i < buildCounts.Length; i++) {
 			buildCounts[i] = -1;
 		}
@@ -78,14 +80,23 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(Input.GetKeyDown("space") && StartScreen)
+
+        if (Input.GetKeyDown("space") && instructionScren)
         {
-            StartScreen = false;
-            startSprite.GetComponent<Renderer>().enabled = false;
-            startSprite.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+            instructionScren = false;
+            instructionSprite.GetComponent<Renderer>().enabled = false;
+            instructionSprite.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
         }
 
-		if (Time.time - lastBerzerk > berzerkTimer && canBerzerk) {
+        if (Input.GetKeyDown("space") && StartScreen)
+        {
+            StartScreen = false;
+            instructionScren = true;
+            instructionSprite.GetComponent<Renderer>().enabled = true;
+            startSprite.GetComponent<Renderer>().enabled = false;
+        }
+
+            if (Time.time - lastBerzerk > berzerkTimer && canBerzerk) {
 			ActivateBerzerk();
 		}
 	}

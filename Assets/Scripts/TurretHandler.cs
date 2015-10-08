@@ -7,12 +7,18 @@ public class TurretHandler : MonoBehaviour {
 	private Vector2 fireDirection;
 	private int playerOwnedBy;
 	private GameObject buildEffect, shootEffect;
+    private Animation buildAnimation;
 	private float health;
+    public Transform bulletPos;
+
+    public GameObject turretHead;
 
 	// Use this for initialization
 	void Start () {
 		active = false;
 		beginCapture = 0f;
+        buildAnimation = transform.parent.GetChild(2).GetComponent<Animation>();
+       // Debug.Log(buildAnimation);
 	}
 	
 	// Update is called once per frame
@@ -20,7 +26,7 @@ public class TurretHandler : MonoBehaviour {
 		if (active) {
 			if (Time.time - lastShot > GameManager.instance.pauseBtwnBullets) {
 				lastShot = Time.time;
-				GameManager.instance.InstantiateBullet (transform.position, fireDirection);
+				GameManager.instance.InstantiateBullet (bulletPos.position, fireDirection);
 			}
 		}
 	}
@@ -32,6 +38,13 @@ public class TurretHandler : MonoBehaviour {
 				if(beginCapture == 0f && !buildEffect) {
 					beginCapture = Time.time;
 					buildEffect = GameManager.instance.Rebuild(gameObject.transform.position);
+                    //ANIMATIONS START HERE
+                    foreach (AnimationState AS in buildAnimation)
+                    {
+                        AS.speed = -1;
+
+                    }
+                    buildAnimation.Play();
                 }
 
                 float horz = pc.GetRotationX();
@@ -39,11 +52,15 @@ public class TurretHandler : MonoBehaviour {
                 if (Mathf.Abs(horz) > 0.1f || Mathf.Abs(vert) > 0.1f)
                 {
                     float angleT = Mathf.Atan2(vert, horz) * Mathf.Rad2Deg;
-                    transform.localEulerAngles = new Vector3(0, 0, angleT);
+                    turretHead.transform.eulerAngles = new Vector3(0, angleT, 0);
+                    transform.eulerAngles = new Vector3(0, 0, angleT);
+                    bulletPos.eulerAngles = new Vector3(0, 0, angleT);
+                    // transform.Rotate(new Vector3(0, angleT, 0));
                 }
 
+
                 if (Time.time - beginCapture > GameManager.instance.timeToBuild && !active) {
-					active = true;
+                    active = true;
 					health = GameManager.instance.turretHealth;
 					playerOwnedBy = (int)pc.playerNum;
 					GameManager.instance.buildCounts[playerOwnedBy] ++;
@@ -60,8 +77,11 @@ public class TurretHandler : MonoBehaviour {
 
 	void OnTriggerExit2D(Collider2D c) {
 		beginCapture = 0f;
-		if (buildEffect)
-			GameObject.Destroy (buildEffect);
+        if (buildEffect)
+        {
+            GameObject.Destroy(buildEffect);
+            buildAnimation.Stop();
+        }
 	}
 
 	void OnCollisionEnter2D(Collision2D c) {

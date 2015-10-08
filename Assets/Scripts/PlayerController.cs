@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (!GameManager.instance.StartScreen)
+        if (!GameManager.instance.instructionScren)
         {
             xMovement = GamePad.GetState(playerNum).ThumbSticks.Left.X;
             yMovement = GamePad.GetState(playerNum).ThumbSticks.Left.Y;
