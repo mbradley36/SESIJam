@@ -7,14 +7,14 @@ public class GameManager : MonoBehaviour {
 	public GameObject playerPrefab, bulletPrefab,
 						objectDestroyed, objectRebuild, 
                         shield, turretFire, startSprite, 
-                        instructionSprite, spawnTransform;
+                        instructionSprite, spawnTransform, winText;
 	public Color[] playerColors = new Color[4];
 	public float minBerzerkTime, maxBerzerkTime;
 	public float pauseBtwnBullets;
 	public float playerSpeed, bezerkSpeed, bulletForce, timeToBuild, 
-					shiledTimeLimit, shieldBurnTime, rotationSpeed, turretHealth;
+					shiledTimeLimit, shieldBurnTime, rotationSpeed, turretHealth, gameTimeLimit;
 	private float lastBerzerk;
-	public float berzerkTimer;
+	public float berzerkTimer, gameStarted;
 	private bool canBerzerk = true;
 
     [HideInInspector]
@@ -80,6 +80,40 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (Time.time - gameStarted > gameTimeLimit)
+        {
+            Debug.Log("game over");
+            instructionScren = true;
+            int max = 0;
+            int playerID = 0;
+            for (int i = 0; i < buildCounts.Length; i++)
+            {
+                if (buildCounts[i] > max)
+                {
+                    max = buildCounts[i];
+                    playerID = i;
+                }
+            }
+
+            if (playerID == 0)
+            {
+                winText.GetComponent<GUIText>().text = "Player 1 wins!";
+            }
+            else if (playerID == 1)
+            {
+                winText.GetComponent<GUIText>().text = "Player 2 wins!";
+
+            }
+            else if (playerID == 2)
+            {
+                winText.GetComponent<GUIText>().text = "Player 3 wins!";
+
+            }
+            else if (playerID == 3)
+            {
+                winText.GetComponent<GUIText>().text = "Player 4 wins!";
+            }
+        }
 
         if (Input.GetKeyDown("space") && instructionScren)
         {
@@ -94,12 +128,13 @@ public class GameManager : MonoBehaviour {
             instructionScren = true;
             instructionSprite.GetComponent<Renderer>().enabled = true;
             startSprite.GetComponent<Renderer>().enabled = false;
+            gameStarted = Time.time;
         }
 
-            if (Time.time - lastBerzerk > berzerkTimer && canBerzerk) {
-			ActivateBerzerk();
-		}
-	}
+        if (Time.time - lastBerzerk > berzerkTimer && canBerzerk) {
+            ActivateBerzerk();
+        }
+    }
 
 	float GetNewTimer() {
 		return Random.Range (minBerzerkTime, maxBerzerkTime);
