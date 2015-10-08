@@ -30,8 +30,8 @@ public class PlayerController : MonoBehaviour {
 		burnTime = Time.time + GameManager.instance.shieldBurnTime;
 		cannon1 = transform.GetChild (0);
         cannon2 = transform.GetChild(1);
-        berzerk = transform.GetChild(2).GetComponent<Renderer>();
-        normal = transform.GetChild(3).GetComponent<Renderer>();
+        berzerk = transform.GetChild(3).GetComponent<Renderer>();
+        normal = transform.GetChild(2).GetComponent<Renderer>();
 
         berzerk.enabled = false;
         normal.enabled = true;
@@ -71,17 +71,29 @@ public class PlayerController : MonoBehaviour {
 
 		if(Time.time - lastBulletTime > GameManager.instance.pauseBtwnBullets/5f) {
 			Vector3 gunLocation = transform.position;
-			Vector3 shootDir = new Vector3(forward.position.x - transform.position.x, 
-			                               forward.position.y - transform.position.y, 
-			                               forward.position.y - transform.position.z);
-			GameManager.instance.InstantiateBullet (forward.position, shootDir);
-			lastBulletTime = Time.time;
+			Vector3 shootDir = new Vector3(cannon1.position.x - transform.position.x,
+                                           cannon1.position.y - transform.position.y,
+                                           cannon1.position.y - transform.position.z);
+            shootDir = new Vector3(shootDir.y, shootDir.x, shootDir.z);
+			GameManager.instance.InstantiateBullet (cannon1.position, shootDir);
+            Vector3 shootDir2 = new Vector3(cannon2.position.x - transform.position.x,
+                                            cannon2.position.y - transform.position.y,
+                                            cannon2.position.y - transform.position.z);
+            shootDir2 = new Vector3(-shootDir2.y, shootDir2.x, shootDir2.z);
+            GameManager.instance.InstantiateBullet(cannon2.position, shootDir2);
+            lastBulletTime = Time.time;
 		}
 
-		float fwdRotation = GamePad.GetState(playerNum).ThumbSticks.Right.X;
-		if (Mathf.Abs(fwdRotation) > 0.1f) {
-			forward.RotateAround(transform.position, Vector3.forward, GameManager.instance.rotationSpeed*fwdRotation*Time.deltaTime);
-		}
+		float horz = GamePad.GetState(playerNum).ThumbSticks.Right.X;
+        float vert = GamePad.GetState(playerNum).ThumbSticks.Right.Y;
+        if (Mathf.Abs(horz) > 0.1f || Mathf.Abs(vert) > 0.1f) {
+            //forward.RotateAround(transform.position, Vector3.forward, GameManager.instance.rotationSpeed*fwdRotation*Time.deltaTime);
+            float angleT = Mathf.Atan2(vert, horz) * Mathf.Rad2Deg;
+            Debug.Log(angleT);
+            //transform.RotateAround(transform.position, Vector3.forward, angleT);
+            //if(Mathf.Abs(transform.rotation.z - angleT) < 0.1f)transform.Rotate(new Vector3(0, 0, angleT));
+            transform.localEulerAngles = new Vector3(0, 0, angleT);
+        }
 	}
 
 	private void UpdateBuilderMovement() {
