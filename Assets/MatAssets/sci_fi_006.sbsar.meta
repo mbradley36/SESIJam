@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 49789770b158b5c4fa24c45d6e10e903
-timeCreated: 1444243542
+guid: 576d8c2beb49af441af4f22617d02a66
+timeCreated: 1444276275
 licenseType: Pro
 SubstanceImporter:
   serializedVersion: 5
@@ -12,6 +12,20 @@ SubstanceImporter:
     shaderKeywords: _EMISSION _NORMALMAP _PARALLAXMAP _SPECGLOSSMAP
     renderQueue: -1
     inputs:
+    - name: button
+      value:
+        scalar[0]: 0
+        scalar[1]: 0
+        scalar[2]: 0
+        scalar[3]: 0
+        texture: {instanceID: 0}
+    - name: button_light
+      value:
+        scalar[0]: 0
+        scalar[1]: 0
+        scalar[2]: 0
+        scalar[3]: 0
+        texture: {instanceID: 0}
     - name: $outputsize
       value:
         scalar[0]: 8
@@ -103,13 +117,6 @@ SubstanceImporter:
         scalar[2]: 0
         scalar[3]: 0
         texture: {instanceID: 0}
-    - name: button
-      value:
-        scalar[0]: 1
-        scalar[1]: 0
-        scalar[2]: 0
-        scalar[3]: 0
-        texture: {instanceID: 0}
     - name: button_type
       value:
         scalar[0]: 0
@@ -118,13 +125,6 @@ SubstanceImporter:
         scalar[3]: 0
         texture: {instanceID: 0}
     - name: button_size
-      value:
-        scalar[0]: 1
-        scalar[1]: 0
-        scalar[2]: 0
-        scalar[3]: 0
-        texture: {instanceID: 0}
-    - name: button_light
       value:
         scalar[0]: 1
         scalar[1]: 0
@@ -208,7 +208,7 @@ SubstanceImporter:
           first:
             name: _MainTex
           second:
-            texture: {instanceID: 0}
+            texture: {fileID: 2800000, guid: 72a58bd572050c34c9196752edba5cac, type: 3}
             scale: {x: 1, y: 1}
             offset: {x: 0, y: 0}
         data:
@@ -365,10 +365,6 @@ SubstanceImporter:
       aniso: 1
       wrapMode: 0
     textureAssignments:
-    - shaderProp:
-        name: _MainTex
-      material: {instanceID: 0}
-      baseUID: 3272869966
     - shaderProp:
         name: _BumpMap
       material: {instanceID: 0}
