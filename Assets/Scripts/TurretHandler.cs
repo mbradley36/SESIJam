@@ -11,6 +11,8 @@ public class TurretHandler : MonoBehaviour {
 	private float health;
     public Transform bulletPos;
 
+    public GameObject turretHead;
+
 	// Use this for initialization
 	void Start () {
 		active = false;
@@ -36,6 +38,7 @@ public class TurretHandler : MonoBehaviour {
 				if(beginCapture == 0f && !buildEffect) {
 					beginCapture = Time.time;
 					buildEffect = GameManager.instance.Rebuild(gameObject.transform.position);
+                    //ANIMATIONS START HERE
                     foreach (AnimationState AS in buildAnimation)
                     {
                         AS.speed = -1;
@@ -44,13 +47,16 @@ public class TurretHandler : MonoBehaviour {
                     buildAnimation.Play();
                 }
 
-             /*   float horz = pc.GetRotationX();
+                float horz = pc.GetRotationX();
                 float vert = pc.GetRotationY();
                 if (Mathf.Abs(horz) > 0.1f || Mathf.Abs(vert) > 0.1f)
                 {
                     float angleT = Mathf.Atan2(vert, horz) * Mathf.Rad2Deg;
-                    transform.localEulerAngles = new Vector3(0, 0, angleT);
-                }*/
+                    turretHead.transform.eulerAngles = new Vector3(0, angleT, 0);
+                    transform.eulerAngles = new Vector3(0, 0, angleT);
+                    bulletPos.eulerAngles = new Vector3(0, 0, angleT);
+                    // transform.Rotate(new Vector3(0, angleT, 0));
+                }
 
 
                 if (Time.time - beginCapture > GameManager.instance.timeToBuild && !active) {
