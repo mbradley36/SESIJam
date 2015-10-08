@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         StartScreen = true;
+        instructionScren = false;
 		for(int i = 0; i < buildCounts.Length; i++) {
 			buildCounts[i] = -1;
 		}
@@ -79,19 +80,20 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(Input.GetKeyDown("space") && StartScreen)
-        {
-            StartScreen = false;
-            instructionScren = true;
-            instructionSprite.GetComponent<Renderer>().enabled = true;
-            startSprite.GetComponent<Renderer>().enabled = false;
-        }
 
         if (Input.GetKeyDown("space") && instructionScren)
         {
             instructionScren = false;
             instructionSprite.GetComponent<Renderer>().enabled = false;
-            startSprite.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+            instructionSprite.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
+        }
+
+        if (Input.GetKeyDown("space") && StartScreen)
+        {
+            StartScreen = false;
+            instructionScren = true;
+            instructionSprite.GetComponent<Renderer>().enabled = true;
+            startSprite.GetComponent<Renderer>().enabled = false;
         }
 
             if (Time.time - lastBerzerk > berzerkTimer && canBerzerk) {
