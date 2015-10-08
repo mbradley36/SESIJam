@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 	public GameObject playerPrefab, bulletPrefab,
 						objectDestroyed, objectRebuild, 
-                        shield, turretFire, startSprite;
+                        shield, turretFire, startSprite, spawnTransform;
 	public Color[] playerColors = new Color[4];
 	public float minBerzerkTime, maxBerzerkTime;
 	public float pauseBtwnBullets;
@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour {
 			s.transform.parent = pc.transform;
 			pc.shield = shieldRenderer;
 			buildCounts[i] = 0;
+            pc.transform.position = spawnTransform.transform.position;
 		}
 
 		//input setup
@@ -81,6 +82,7 @@ public class GameManager : MonoBehaviour {
         {
             StartScreen = false;
             startSprite.GetComponent<Renderer>().enabled = false;
+            startSprite.transform.GetChild(0).GetComponent<Renderer>().enabled = false;
         }
 
 		if (Time.time - lastBerzerk > berzerkTimer && canBerzerk) {

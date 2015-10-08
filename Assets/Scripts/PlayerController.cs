@@ -73,10 +73,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void UpdateBezerkMovement() {
-		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
-			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.bezerkSpeed);
-		}
-
 		if(Time.time - lastBulletTime > GameManager.instance.pauseBtwnBullets/5f) {
 			Vector3 gunLocation = transform.position;
 			Vector3 shootDir = new Vector3(transform.forward.x - transform.position.x,
@@ -132,7 +128,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void ActivateBerzerk() {
-        GetComponent<Rigidbody2D>().isKinematic = true;
+       GetComponent<Rigidbody2D>().isKinematic = true;
 
 		bezerkState = true;
 		berzerkStart = Time.time;
