@@ -54,7 +54,7 @@ public class TurretHandler : MonoBehaviour {
 
 
                 if (Time.time - beginCapture > GameManager.instance.timeToBuild && !active) {
-					active = true;
+                    active = true;
 					health = GameManager.instance.turretHealth;
 					playerOwnedBy = (int)pc.playerNum;
 					GameManager.instance.buildCounts[playerOwnedBy] ++;
@@ -75,7 +75,6 @@ public class TurretHandler : MonoBehaviour {
         {
             GameObject.Destroy(buildEffect);
             buildAnimation.Stop();
-            buildAnimation.Rewind("Main");
         }
 	}
 
