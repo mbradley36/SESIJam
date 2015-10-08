@@ -11,7 +11,7 @@ public class TurretHandler : MonoBehaviour {
 	private float health;
     public Transform bulletPos;
 
-    public GameObject turretHead;
+    public GameObject turretHead, turretColor;
 
 	// Use this for initialization
 	void Start () {
@@ -52,18 +52,19 @@ public class TurretHandler : MonoBehaviour {
                 if (Mathf.Abs(horz) > 0.1f || Mathf.Abs(vert) > 0.1f)
                 {
                     float angleT = Mathf.Atan2(vert, horz) * Mathf.Rad2Deg;
-                    turretHead.transform.eulerAngles = new Vector3(0, angleT, 0);
+                    turretHead.transform.localEulerAngles = new Vector3(0, -angleT, 0);
                     transform.eulerAngles = new Vector3(0, 0, angleT);
                     bulletPos.eulerAngles = new Vector3(0, 0, angleT);
-                    // transform.Rotate(new Vector3(0, angleT, 0));
                 }
 
 
                 if (Time.time - beginCapture > GameManager.instance.timeToBuild && !active) {
                     active = true;
+                
 					health = GameManager.instance.turretHealth;
 					playerOwnedBy = (int)pc.playerNum;
-					GameManager.instance.buildCounts[playerOwnedBy] ++;
+                    turretColor.GetComponent<Renderer>().material.color = GameManager.instance.playerColors[playerOwnedBy];
+                    GameManager.instance.buildCounts[playerOwnedBy] ++;
 					GetComponent<BoxCollider2D>().isTrigger = false;
 					Vector2 charPos = c.gameObject.transform.position;
                     fireDirection = transform.right;

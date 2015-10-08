@@ -25,8 +25,9 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		GetComponent<SpriteRenderer> ().color = GameManager.instance.playerColors [(int)playerNum];
-		rb = GetComponent<Rigidbody2D> ();
+		transform.GetChild(2).GetComponent<Renderer>().materials[1].color = GameManager.instance.playerColors [(int)playerNum];
+        transform.GetChild(3).GetComponent<Renderer>().materials[1].color = GameManager.instance.playerColors[(int)playerNum];
+        rb = GetComponent<Rigidbody2D> ();
 		burnTime = Time.time + GameManager.instance.shieldBurnTime;
 		cannon1 = transform.GetChild (0);
         cannon2 = transform.GetChild(1);
