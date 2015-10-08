@@ -9,6 +9,7 @@ public class TurretHandler : MonoBehaviour {
 	private GameObject buildEffect, shootEffect;
     private Animation buildAnimation;
 	private float health;
+    public Transform bulletPos;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +24,7 @@ public class TurretHandler : MonoBehaviour {
 		if (active) {
 			if (Time.time - lastShot > GameManager.instance.pauseBtwnBullets) {
 				lastShot = Time.time;
-				GameManager.instance.InstantiateBullet (transform.position, fireDirection);
+				GameManager.instance.InstantiateBullet (bulletPos.position, fireDirection);
 			}
 		}
 	}
