@@ -17,7 +17,9 @@ public class PlayerController : MonoBehaviour {
 	public float shieldUsed = 0f;
 	private bool shieldBurnOut;
 	private float burnTime, lastBulletTime, berzerkStart;
-	private Transform forward;
+	private Transform cannon1, cannon2;
+
+    private Renderer berzerk, normal;
 
 	private float xMovement, yMovement, shieldLeft;
 
@@ -26,8 +28,14 @@ public class PlayerController : MonoBehaviour {
 		GetComponent<SpriteRenderer> ().color = GameManager.instance.playerColors [(int)playerNum];
 		rb = GetComponent<Rigidbody2D> ();
 		burnTime = Time.time + GameManager.instance.shieldBurnTime;
-		forward = transform.GetChild (0);
-	}
+		cannon1 = transform.GetChild (0);
+        cannon2 = transform.GetChild(1);
+        berzerk = transform.GetChild(2).GetComponent<Renderer>();
+        normal = transform.GetChild(3).GetComponent<Renderer>();
+
+        berzerk.enabled = false;
+        normal.enabled = true;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -106,10 +114,16 @@ public class PlayerController : MonoBehaviour {
 		bezerkState = true;
 		berzerkStart = Time.time;
 		lastBulletTime = Time.time;
-	}
+
+        berzerk.enabled = true;
+        normal.enabled = false;
+    }
 
 	public void DeactivateBerzerk() {
 		bezerkState = false;
-	}
+
+        berzerk.enabled = false;
+        normal.enabled = true;
+    }
 	
 }
