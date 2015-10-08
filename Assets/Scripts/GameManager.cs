@@ -5,7 +5,8 @@ using XInputDotNetPure;
 public class GameManager : MonoBehaviour {
 	public static GameManager instance;
 	public GameObject playerPrefab, bulletPrefab,
-						objectDestroyed, objectRebuild, shield, turretFire;
+						objectDestroyed, objectRebuild, 
+                        shield, turretFire, startSprite;
 	public Color[] playerColors = new Color[4];
 	public float minBerzerkTime, maxBerzerkTime;
 	public float pauseBtwnBullets;
@@ -14,6 +15,9 @@ public class GameManager : MonoBehaviour {
 	private float lastBerzerk;
 	public float berzerkTimer;
 	private bool canBerzerk = true;
+
+    [HideInInspector]
+    public bool StartScreen;
 
 	public int[] buildCounts = new int[4];
 
@@ -25,6 +29,7 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        StartScreen = true;
 		for(int i = 0; i < buildCounts.Length; i++) {
 			buildCounts[i] = -1;
 		}
@@ -72,6 +77,12 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(Input.GetKeyDown("space") && StartScreen)
+        {
+            StartScreen = false;
+            startSprite.GetComponent<Renderer>().enabled = false;
+        }
+
 		if (Time.time - lastBerzerk > berzerkTimer && canBerzerk) {
 			ActivateBerzerk();
 		}

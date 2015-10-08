@@ -39,21 +39,29 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!GameManager.instance.StartScreen)
+        {
+            xMovement = GamePad.GetState(playerNum).ThumbSticks.Left.X;
+            yMovement = GamePad.GetState(playerNum).ThumbSticks.Left.Y;
 
-		xMovement = GamePad.GetState(playerNum).ThumbSticks.Left.X;
-		yMovement = GamePad.GetState(playerNum).ThumbSticks.Left.Y;
-
-		if (bezerkState) {
-			if(Time.time - berzerkStart > GameManager.instance.berzerkTimer) {
-				DeactivateBerzerk();
-				GameManager.instance.ResetBerzerkTimer();
-				UpdateBuilderMovement();
-			} else {
-				UpdateBezerkMovement ();
-			}
-		} else {
-			UpdateBuilderMovement();
-		}
+            if (bezerkState)
+            {
+                if (Time.time - berzerkStart > GameManager.instance.berzerkTimer)
+                {
+                    DeactivateBerzerk();
+                    GameManager.instance.ResetBerzerkTimer();
+                    UpdateBuilderMovement();
+                }
+                else
+                {
+                    UpdateBezerkMovement();
+                }
+            }
+            else
+            {
+                UpdateBuilderMovement();
+            }
+        }
 	}
 
 	public bool InBuildZone(){
