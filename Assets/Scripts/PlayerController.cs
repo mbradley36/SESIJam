@@ -39,21 +39,29 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!GameManager.instance.StartScreen)
+        {
+            xMovement = GamePad.GetState(playerNum).ThumbSticks.Left.X;
+            yMovement = GamePad.GetState(playerNum).ThumbSticks.Left.Y;
 
-		xMovement = GamePad.GetState(playerNum).ThumbSticks.Left.X;
-		yMovement = GamePad.GetState(playerNum).ThumbSticks.Left.Y;
-
-		if (bezerkState) {
-			if(Time.time - berzerkStart > GameManager.instance.berzerkTimer) {
-				DeactivateBerzerk();
-				GameManager.instance.ResetBerzerkTimer();
-				UpdateBuilderMovement();
-			} else {
-				UpdateBezerkMovement ();
-			}
-		} else {
-			UpdateBuilderMovement();
-		}
+            if (bezerkState)
+            {
+                if (Time.time - berzerkStart > GameManager.instance.berzerkTimer)
+                {
+                    DeactivateBerzerk();
+                    GameManager.instance.ResetBerzerkTimer();
+                    UpdateBuilderMovement();
+                }
+                else
+                {
+                    UpdateBezerkMovement();
+                }
+            }
+            else
+            {
+                UpdateBuilderMovement();
+            }
+        }
 	}
 
 	public bool InBuildZone(){
@@ -65,10 +73,6 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	private void UpdateBezerkMovement() {
-		if (Mathf.Abs(xMovement) > 0.001f || Mathf.Abs(yMovement) > 0.001f) {
-			rb.AddForce(new Vector2(xMovement, yMovement)*GameManager.instance.bezerkSpeed);
-		}
-
 		if(Time.time - lastBulletTime > GameManager.instance.pauseBtwnBullets/5f) {
 			Vector3 gunLocation = transform.position;
 			Vector3 shootDir = new Vector3(transform.forward.x - transform.position.x,
@@ -124,7 +128,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public void ActivateBerzerk() {
-        GetComponent<Rigidbody2D>().isKinematic = true;
+       GetComponent<Rigidbody2D>().isKinematic = true;
 
 		bezerkState = true;
 		berzerkStart = Time.time;
